@@ -1,0 +1,146 @@
+<header>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="text-center">My Budget</h1>
+			</div>
+		</div>
+	</div>
+</header>
+
+<main class="main-container">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<% if @lineitems.blank? %>
+					<h3 class="text-center">You have not created any line items. <a href="#" data-toggle="modal" data-target="#LIModal">Get Started!</a></h3>
+				<% end %>
+
+
+				<h4><a href="#" data-toggle="modal" data-target="#LIModal">Add Line Item</a><span class="pull-right"><a href="#" data-toggle="modal" data-target="#transModal">Add Transaction</a><span></h4>
+
+				<% for lines in @lineitems %>
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="panel-title"><%= lines.name %></h2>
+							</div>
+							
+						</div>
+						
+					</div>
+
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-6">
+								<p>Starting Amount: <%= number_to_currency lines.starting_amount %></p>
+							</div>
+							<div class="col-md-6">
+								<% if lines.starting_amount + lines.transactions.sum(:trans_amount) < 0 %>
+								<p class="text-right"><span class="red">Remaining: <%= number_to_currency lines.starting_amount + lines.transactions.sum(:trans_amount) %></span></p>
+									<% else %>
+										<p class="text-right"><span class="green">Remaining: <%= number_to_currency lines.starting_amount + lines.transactions.sum(:trans_amount) %></span></p>
+									<% end %>
+								</p>
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<% end %>
+				
+			</div>
+		</div>
+	</div>
+</main>
+<% if @lineitems.present? %>
+<footer>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8">
+				<div class="row">
+					<div class="col-md-6">
+						<h3>Budget Total: <%= number_to_currency budget_total %></h3>
+					</div>
+					<div class="col-md-6">
+						<h3 class="text-right">Total Remaining: <%= number_to_currency budget_total + Transaction.all.sum(:trans_amount) %></h3>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
+<% end %>
+
+<div class="modal fade" id="LIModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <% if @lineitems.count < 1 %>
+        <h4 class="modal-title text-center">Add your first line item!</h4>
+        <% else %>
+        <h4 class="modal-title text-center">Add another line item!</h4>
+        <% end %>
+      </div>
+      <div class="modal-body">
+        <%= form_for @new_line do |f| %>
+        	<div class="form-group">
+        		<label class="sr-only">Name</label>
+        		<%= f.text_field :name, placeholder: "Name", class: "form-control" %>
+        	</div>
+        	<div class="form-group">
+        		<label class="sr-only">Starting Amount</label>
+        		<%= f.text_field :starting_amount, placeholder: "Starting Amount", class: "form-control" %>
+        	</div>
+        	<%= submit_tag "Add Line Item", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="modal fade" id="transModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        
+        <h4 class="modal-title text-center">Add Transaction</h4>
+        
+      </div>
+      <div class="modal-body">
+        <%= form_for Transaction.new do |f| %>
+        	<div class="form-group">
+        		<label class="sr-only">Description</label>
+        		<%= f.text_field :description, placeholder: "Description", class: "form-control" %>
+        	</div>
+        	<div class="form-group">
+        		<label class="sr-only">Starting Amount</label>
+        		<%= f.text_field :trans_amount, placeholder: "Transaction Amount", class: "form-control" %>
+        	</div>
+        	<div class="form-group">
+        		<%= f.collection_select :lineitem_id, Lineitem.all, :id, :name, {prompt: "--apply to line item--"}, {class: "form-control"} %>
+        		<!--<select class="form-control">
+        			<option val="">-- select line item --</option>
+  						<option>2</option>
+  						<option>3</option>
+  						<option>4</option>
+  						<option>5</option>
+        		</select>-->
+        	</div>
+        	<%= submit_tag "Add as Debit", name: "debit", class: "btn btn-danger" %>
+        	<%= submit_tag "Add as Credit", name: "credit", class: "btn btn-success" %>
+        <% end %>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
