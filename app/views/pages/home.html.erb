@@ -14,11 +14,11 @@
 			<div class="col-md-offset-2 col-md-8">
 				<% if @lineitems.blank? %>
 					<h3 class="text-center">You have not created any line items. <a href="#" data-toggle="modal" data-target="#LIModal">Get Started!</a></h3>
-				<% end %>
+				<% else %>
 
-
+				
 				<h4><a href="#" data-toggle="modal" data-target="#LIModal">Add Line Item</a><span class="pull-right"><a href="#" data-toggle="modal" data-target="#transModal">Add Transaction</a><span></h4>
-
+				<% end %>
 				<% for lines in @lineitems %>
 				<div class="panel panel-default">
 					<div class="panel-heading">
