@@ -34,4 +34,25 @@
  a {
  	text-decoration:underline;
  }
+ .button {
+ 	margin-top:70px;
+ }
+ .big-button {
+ 	padding:30px 50px;
+ 	background:#999;
+ 	width:300px;
+ 	margin:auto;
+ 	color:white;
+ 	transition:all 1.3s ease; 
+ 	background:#fff;
+ 	text-decoration:none;
+ 	text-transform: uppercase;
+ }
+.big-button:hover {
+	box-shadow:inset 0 0 0 8px #bbb;
+	background:#ddd;
+	text-decoration:none;
+	transform:rotate(360deg)
+}
+
  
