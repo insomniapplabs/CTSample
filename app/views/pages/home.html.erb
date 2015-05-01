@@ -48,6 +48,20 @@
 
 							</div>
 						</div>
+						<a href="" id="view">View Transactions</a>
+						<a href="" id="hide">Hide Transactions</a>
+						<div id="trans-list">
+							<% for transaction in @transactions %>
+							<div class="row">
+								<div class="col-md-6">
+									<p><%= transaction.description %></p>
+								</div>
+								<div class="col-md-6">
+									<p class="text-right"><%= transaction.trans_amount %></p>
+								</div>
+							</div>
+							<% end %>
+						</div>
 					</div>
 				</div>
 				<% end %>

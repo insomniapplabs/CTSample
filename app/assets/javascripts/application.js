@@ -15,3 +15,24 @@
 //= require turbolinks
 //= require bootstrap-sprockets
 //= require_tree .
+
+jQuery(function() {
+	$("#hide").hide();
+	$("#trans-list").hide();
+
+	$("#view").click(function() {
+		$("#trans-list").slideDown();
+		$("#view").hide();
+		$("#hide").show();
+		event.preventDefault();
+	});
+
+	$("#hide").click(function() {
+		$("#trans-list").slideUp();
+		$("#hide").hide();
+		$("#view").show();
+		event.preventDefault();
+	});
+});
+
+

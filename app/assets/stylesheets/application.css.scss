@@ -33,6 +33,11 @@
  }
  a {
  	text-decoration:underline;
+ 	background:transparent;
+ }
+ a:hover {
+ 	text-decoration:underline;
+ 	background:transparent;
  }
  .button {
  	margin-top:70px;
@@ -53,6 +58,9 @@
 	background:#ddd;
 	text-decoration:none;
 	transform:rotate(360deg)
+}
+#trans-list {
+	margin-top:10px;
 }
 
  
